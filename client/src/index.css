@@ -1,0 +1,9 @@
+/*
+Default font and font size
+*/
+
+body {
+  font-size: 18px;
+  color: black;
+  font-family: Verdana, Georgia, Tahoma, sans-serif;
+}
