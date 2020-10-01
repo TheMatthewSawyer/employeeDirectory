@@ -161,3 +161,25 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+table {
+  width: 100%;
+}
+
+.displayNone {
+  display: none;
+}
+
+#blueScreenContainer {
+  width: 1440px;
+  position: absolute;
+  left: 50%;
+  overflow-x: visible;
+  cursor: wait;
+}
+
+#blueScreen {
+  position: relative;
+  right: 720px;
+  z-index: 10000;
+}
