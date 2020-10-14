@@ -6,6 +6,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
 
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,11 +18,12 @@ import { set } from 'idb-keyval';
 import { get } from 'idb-keyval';
 import { clear } from 'idb-keyval';
 
-import blue from './images/blue.jpg';
+import blue from './images/blue.gif';
+import error from './audio/error.mp3'
 
 function Table(props) {
-    const currentDepartment = props.currentDepartment;
-    const setCurrentDepartment = props.setCurrentDepartment;
+  const currentDepartment = props.currentDepartment;
+  const setCurrentDepartment = props.setCurrentDepartment;
 
   React.useEffect(() => {
 
@@ -37,8 +40,10 @@ function Table(props) {
   }, []);
 
 
+
+
   checkDB();
-  
+
   function checkDB() {
     get('employeeDB').then(function (DB) {
 
@@ -50,7 +55,7 @@ function Table(props) {
         let departmentList = document.getElementById('departmentList');
         let lengthAll = 0;
         let buttonList = document.querySelectorAll("button.list-group-item");
-        for(var i = 1; i < buttonList.length; i++) {
+        for (var i = 1; i < buttonList.length; i++) {
           buttonList[i].remove();
         }
         for (let i = 0; i < DB.length; i++) {
@@ -76,11 +81,21 @@ function Table(props) {
     return;
   }
 
-
-
   const exitClick = () => {
+    document.getElementById("error").play();
     var blueScreenContainer = document.getElementById('blueScreenContainer');
+    var backingBlue = document.getElementById('backingBlue');
     blueScreenContainer.classList.toggle('displayNone');
+    backingBlue.classList.toggle('displayNone');
+    return;
+  }
+
+  const exitExitClick = () => {
+    var blueScreenContainer = document.getElementById('blueScreenContainer');
+    var backingBlue = document.getElementById('backingBlue');
+    blueScreenContainer.classList.toggle('displayNone');
+    backingBlue.classList.toggle('displayNone');
+    return;
   }
 
   const clippyClick = () => {
@@ -88,51 +103,97 @@ function Table(props) {
   }
 
   const clearAll = () => {
-    if(!window.confirm('Are you sure you want to clear? This cannot be undone')) {
+    if (!window.confirm('Are you sure you want to clear? This cannot be undone')) {
       return;
     } else {
       clear();
       let buttonListForInitialActive = document.querySelectorAll("button.list-group-item");
-      for(let i = 1; i < buttonListForInitialActive.length; i++) {
+      for (let i = 1; i < buttonListForInitialActive.length; i++) {
         buttonListForInitialActive[i].remove();
       }
       document.getElementById('allLength').innerHTML = 0;
       checkDB();
+      setCurrentDepartment(-1);
       return;
     }
   }
 
+  
   function renderDepartments(DB = fetchDB()) {
-    let table = `<table><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Address</th></tr>`;
+    // let table = `<table><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Address</th></tr>`;
+    let table = `<div class="accordion" id="accordionExample">`;
     // console.log(DB)
     if (currentDepartment === -1) {
       for (let x = 0; x < DB.length; x++) {
         for (let y = 0; y < DB[x].data.length; y++) {
+          // table += `
+          // <tr>
+          // <td>${DB[x].data[y].firstName}</td>
+          // <td>${DB[x].data[y].lastName}</td>
+          // <td>${DB[x].data[y].email}</td>
+          // <td>${DB[x].data[y].address}</td>
+          // </tr>
+          // `;
           table += `
-          <tr>
-          <td>${DB[x].data[y].firstName}</td>
-          <td>${DB[x].data[y].firstName}</td>
-          <td>${DB[x].data[y].email}</td>
-          <td>${DB[x].data[y].address}</td>
-          </tr>
+            <div class="card" onclick="document.getElementById('collapse${x + '' + y}').classList.toggle('collapse')">
+              <div class="card-header" id="heading${x + '' + y}">
+                <h2 class="mb-0">
+                  <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${x + '' + y}" aria-expanded="false" aria-controls="collapse${x + '' + y}">
+                    ${DB[x].data[y].firstName + " " + DB[x].data[y].lastName}
+                  </button>
+                </h2>
+              </div>
+          
+              <div id="collapse${x + '' + y}" class="collapse employeeContent" aria-labelledby="heading${x + '' + y}" data-parent="#accordionExample">
+                <div class="card-body">
+                  Email: ${DB[x].data[y].email}
+                  <br/>
+                  Address:
+                  <br/>
+                  ${DB[x].data[y].address}
+                </div>
+              </div>
+            </div>
           `;
         }
       }
+      
     } else {
       for (let z = 0; z < DB[currentDepartment].data.length; z++) {
+        // table += `
+        //   <tr>
+        //   <td>${DB[currentDepartment].data[z].firstName}</td>
+        //   <td>${DB[currentDepartment].data[z].firstName}</td>
+        //   <td>${DB[currentDepartment].data[z].email}</td>
+        //   <td>${DB[currentDepartment].data[z].address}</td>
+        //   </tr>
+        //   `;
         table += `
-          <tr>
-          <td>${DB[currentDepartment].data[z].firstName}</td>
-          <td>${DB[currentDepartment].data[z].firstName}</td>
-          <td>${DB[currentDepartment].data[z].email}</td>
-          <td>${DB[currentDepartment].data[z].address}</td>
-          </tr>
-          `;
+          <div class="card" onclick="document.getElementById('collapse${currentDepartment + '' + z}').classList.toggle('collapse')">
+            <div class="card-header" id="heading${currentDepartment + '' + z}">
+              <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${currentDepartment + '' + z}" aria-expanded="false" aria-controls="collapse${currentDepartment + '' + z}">
+                  ${DB[currentDepartment].data[z].firstName + " " + DB[currentDepartment].data[z].lastName}
+            </button>
+          </h2>
+        </div>
+    
+        <div id="collapse${currentDepartment + '' + z}" class="collapse" aria-labelledby="heading${currentDepartment + '' + z}" data-parent="#accordionExample">
+          <div class="card-body">
+            Email: ${DB[currentDepartment].data[z].email}
+            <br/>
+            Address:
+            <br/>
+            ${DB[currentDepartment].data[z].address}
+          </div>
+        </div>
+      </div>
+        `;
       }
     }
-      
-    table += '</table>'
-    if(document) {
+
+    table += '</div>';
+    if (document) {
       document.getElementById('topRight').innerHTML = table;
     }
     let buttonList = document.querySelectorAll("button.list-group-item");
@@ -150,14 +211,15 @@ function Table(props) {
   function addDepartmentEventListeners() {
     let buttonList = document.querySelectorAll("button.list-group-item");
     // console.log(buttonList);
-    for(var i = 0; i < buttonList.length; i++) {
+    for (var i = 0; i < buttonList.length; i++) {
       buttonList[i].addEventListener('click', function (e) {
         let clickedDepartment = parseInt(e.target.getAttribute('value'));
         let position = clickedDepartment + 1;
         let buttonListForClick = document.querySelectorAll("button.list-group-item");
         console.log('clickedDepartment: ' + clickedDepartment + ' position: ' + position + ' currentDepartment: ' + currentDepartment)
-        buttonListForClick[currentDepartment + 1].classList.remove('active');
-        // buttonListForClick[position].classList.add('active');
+        if (!currentDepartment + 1 === position) {
+          buttonListForClick[currentDepartment + 1].classList.remove('active');
+        }
         console.log(buttonListForClick[position])
         setCurrentDepartment(clickedDepartment);
         // let department = targetedButton - 1;
@@ -224,7 +286,8 @@ function Table(props) {
 
   return (
     <div>
-      <div id='blueScreenContainer' className='displayNone selectNone'  onClick={exitClick}><img src={blue} id='blueScreen' alt=''></img></div>
+      <div id='blueScreenContainer' className='displayNone selectNone' onClick={exitExitClick}><img src={blue} id='blueScreen' alt=''></img></div>
+      <div id='backingBlue' className='displayNone' onClick={exitExitClick}></div>
       <header id='header' className='selectNone'>
         <Row>
           <Col>
@@ -302,6 +365,9 @@ function Table(props) {
             </Col>
           </Row>
         </Container>
+        <audio id="error">
+          <source src={error}></source>
+        </audio>
       </div>
     </div>
   );

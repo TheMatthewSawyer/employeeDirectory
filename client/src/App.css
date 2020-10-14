@@ -171,15 +171,26 @@ table {
 }
 
 #blueScreenContainer {
-  width: 1440px;
+  width: 588px;
   position: absolute;
   left: 50%;
-  overflow-x: visible;
+  top: 50%;
   cursor: wait;
 }
 
 #blueScreen {
   position: relative;
-  right: 720px;
+  right: 294px;
+  bottom: 147px;
   z-index: 10000;
+  height: 209px;
+}
+
+#backingBlue {
+  position: absolute;
+  z-index: 9999;
+  background-color: rgb(0,0,176);
+  width: 100%;
+  height: 100%;
+  cursor: wait;
 }
