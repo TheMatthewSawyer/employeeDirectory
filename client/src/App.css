@@ -33,11 +33,17 @@
   border-top: none;
 }
 
-.selectNone {
+.selectNone, .disabled {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.disabled {
+  opacity: 0.4;
+  text-align: center;
+  line-height: 170px;
 }
 
 .dropdown-toggle::after {
@@ -140,12 +146,14 @@
   border-left: 2px solid rgba(0, 0, 0, 0.5);
   overflow: hidden;
   overflow-y: scroll;
+  height: 400px;
 }
 
-.rightInner {
-  height: 300px;
-  overflow-x: scroll;
+#bottomRight {
+  overflow: hidden;
+  height: 200px;
 }
+
 .leftInner {
   height: 630px;
 }
@@ -193,4 +201,123 @@ table {
   width: 100%;
   height: 100%;
   cursor: wait;
+}
+
+.empNameBtn {
+  color: black;
+  background-color: white;
+  font-size: 0.52em;
+}
+
+
+.empNameBtn:hover {
+  background-color: hsl(209, 86%, 40%);
+  text-decoration: none;
+  color: white;
+}
+
+.empNameBtn:active {
+  background-color: hsl(209, 86%, 60%);
+  text-decoration: none;
+  color: white;
+}
+
+.empInner {
+  padding: 20px 30px;
+  background: #F8F6ED;
+  background: -webkit-linear-gradient(top, #F8F6ED, #F0EFE6);
+  background: -moz-linear-gradient(top, #F8F6ED, #F0EFE6);
+  background: linear-gradient(to bottom, #F8F6ED, #F0EFE6);
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.empData {
+  background-color: white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.copyButtonContainer {
+  position: absolute;
+  right: 33px;
+}
+
+.copyButton {
+  position: relative;
+  bottom: 29px;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-radius: 5px;
+  background-color: hsl(48, 85%, 85%);
+}
+
+.copyButton:hover {
+  background-color: hsl(48, 85%, 92%);
+
+}
+
+.copyButton:active {
+  background-color: hsl(48, 100%, 79%);
+}
+
+.editButtonContainer {
+  position: absolute;
+  right: 33px;
+}
+
+.editButton, .deleteButton {
+  position: relative;
+  bottom: 66px;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-radius: 5px;
+  background-color: hsl(91, 84%, 85%);
+}
+
+.editButton:hover {
+  background-color: hsl(92, 89%, 93%);
+}
+
+.editButton:active {
+  background-color: rgb(190, 255, 133);
+}
+
+.deleteButton {
+  background-color: hsl(22, 100%, 69%);
+}
+
+.deleteButton:hover {
+  background-color: hsl(22, 100%, 80%);
+}
+
+.deleteButton:active {
+  background-color: hsl(22, 100%, 59%);
+}
+
+.addDepartmentContainer {
+  background-color: rgba(20, 136, 245, 0.5);
+  height: calc(1.5em + .75rem + 22px);
+  padding: 10px;
+  margin-top: 60px;
+  border-radius: 10px;
+}
+
+.addDepartmentContainer > .input-group-append > .btn {
+  height: calc(1.5em + .75rem + 2px);
+  background-color: rgb(20, 136, 245);
+}
+
+.closeAddButton {
+   background-color: lightgray;
+   border: none;
+   float: right;
+   border-radius: 20px;
+   font-size: 22px;
+   /* height: 25px; */
+   /* line-height: 25px; */
+   padding: 1px 11px;
+   margin-bottom: 5px;
+   outline: none;
 }
